@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MVC example</title>
+  <style>
+    body {
+      font-size: 21px;
+      text-align: center;
+    }
+
+    input {
+      min-width: 180px;
+      padding: 8px 12px;
+      border: 1px gray solid;
+      border-radius: 3px;
+      margin: 0 5px;
+    }
+
+    select {
+      min-width: 20px;
+      padding: 8px 12px;
+      border: 1px gray solid;
+      border-radius: 3px;
+      margin: 0 5px;
+    }
+
+    button {
+      font-size: 18px;
+      line-height: 21px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Пример решения задачи "в лоб"</h1><!--Исправить на что-то другое-->
+
+  <h3>Пример арифметических операций над двумя числами</h3>
+  <form>
+    <fieldset>
+      <legend>Магия чисел</legend>
+      <p>
+        <input type="number" placeholder="Введите первое значение" name="input_1" id="input_1">
+        <select name="sign" id="sign">
+          <option value="+">+</option>
+          <option value="-">-</option>
+          <option value="*">*</option>
+          <option value="/">/</option>
+        </select>
+        <input type="number" placeholder="Введите второе значение" name="input_2" id="input_2">
+      </p>
+      <p>
+        <button id="calculate-btn">Вычислить</button>
+      </p>
+      <div id="show-result"></div>
+    </fieldset>
+  </form>
+
+<script src="scripts2.js">
+  // const input1 = document.getElementById('input_1');
+  // const input2 = document.getElementById('input_2');
+  // const signInput = document.getElementById('sign');
+  // const btn = document.getElementById('calculate-btn');
+  // const result = document.getElementById('show-result');
+  // btn.disabled = true;
+  // let number1, number2, sign;
+
+  // input1.addEventListener('change', validInputs);
+  // input2.addEventListener('change', validInputs);
+
+  // function validInputs() {
+  //   if (!input1.value || !input2.value) {
+  //     btn.disabled = true;
+  //     result.textContent = '';  
+  //   } else {
+  //     btn.disabled = false;
+  //     number1 = Number(input1.value);// т.к. в калькуляторе у нас будет операция сложения
+  //     number2 = Number(input2.value);
+  //   }
+  // }
+
+  // function getSign() {
+  //   sign = signInput.value;
+  // }
+
+  // function createEquation(a, b, sign) {
+  //   if (sign === '/' && b === 0) {
+  //     return `На ноль делить нельзя`;
+  //   }
+  //   switch(sign) {
+  //     case '+':
+  //       return `Результат: ${a} ${sign} ${b} = ${a + b}`;
+  //     case '-':
+  //       return `Результат: ${a} ${sign} ${b} = ${a - b}`;
+  //     case '*':
+  //       return `Результат: ${a} ${sign} ${b} = ${a * b}`;
+  //     case '/':
+  //       return `Результат: ${a} ${sign} ${b} = ${a / b}`;
+  //   }
+  // }
+
+  // function calculate(e) {
+  //   e.preventDefault();
+  //   getSign();
+  //   result.textContent = createEquation(number1, number2, sign);
+  // }
+  // btn.addEventListener('click', calculate);
+</script>
+</body>
+</html>
