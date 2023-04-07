@@ -1,58 +1,66 @@
 // Model
 const calculator = {
   isBtnDisabled: true,
-  setOperand: function(operand, num) {
+  setOperand(operand, num, sign) { // сокращенная запись метода предпочтительнее (если что, для нее в отличии от обычной записи метода при наследовании доступен super)
     operand === 'firstOperand' ? this.firstOperand = num : this.secondOperand = num;
-            console.log(operand, 'num', num, 'this.firstOperand', this.firstOperand, 'this.secondOperand', this.secondOperand, 'this.operator', this.operator)
+    this.validateInputs(this.firstOperand, this.secondOperand);
+    this.setOperator(sign);
   },
-  setOperator: function(sign) {
+  setOperator(sign) {
     this.operator = sign;
-    console.log('this.operator', sign)
+  },
+  validateInputs(valueNum1, valueNum2) {
+    if (!valueNum1 || !valueNum2) {
+      this.changeDisabledBtnCondition(true);
+      this.disableBtnView();
+      this.blankCalculatorView();
+    } else {
+      this.changeDisabledBtnCondition(false);
+      this.disableBtnView();
+    }
   },
   createEquation(a, b, sign) {
-    if (sign === '/' && b === 0) {
+    const number_1 = Number(a);
+    const number_2 = Number(b);
+    if (sign === '/' && number_2 === 0) {
       return `На ноль делить нельзя`;
     }
     switch(sign) {
       case '+':
-        return `Результат: ${a} ${sign} ${b} = ${a + b}`;
+        return `Результат: ${number_1} ${sign} ${number_2} = ${number_1 + number_2}`;
       case '-':
-        return `Результат: ${a} ${sign} ${b} = ${a - b}`;
+        return `Результат: ${number_1} ${sign} ${number_2} = ${number_1 - number_2}`;
       case '*':
-        return `Результат: ${a} x ${b} = ${a * b}`;
+        return `Результат: ${number_1} x ${number_2} = ${number_1 * number_2}`;
       case '/':
-        return `Результат: ${a} ${sign} ${b} = ${a / b}`;
+        return `Результат: ${number_1} ${sign} ${number_2} = ${number_1 / number_2}`;
     }
   },
-  blankCalculatorView: function() {
-    calculatorView.blankResultField(); // model вызывает обновление view
+  blankCalculatorView() {
+    calculatorView.blankResultField(); // Model вызывает обновление View
   },
-  showCalculatorView: function(e) {
+  showCalculatorView(e) {
     calculatorView.showResult(e, this.createEquation(this.firstOperand, this.secondOperand, this.operator)); // model вызывает обновление view
   },
-      changeDisabledBtnCondition(bool) { // Эту и следующую функцию можно было бы сделать одной, но я думаю такой вариант лучше покажет как мы контроллером работаем с моделью (т.е. модель изменяет свое состояние реагируя на действия контроллера)
-        this.isBtnDisabled = bool;
-      },
-      disableBtnView: function() {
-        calculatorView.disableBtn(this.isBtnDisabled); // model вызывает обновление view
-      },
-  log: function() {
-    console.log('ddd')
-  }
+  changeDisabledBtnCondition(bool) { // Функции changeDisabledBtnCondition() и  disableBtnView() можно было бы сделать одной, но я думаю такой вариант лучше покажет как мы контроллером работаем с моделью (т.е. модель изменяет свое состояние реагируя на действия контроллера)
+    this.isBtnDisabled = bool;
+  },
+  disableBtnView() {
+    calculatorView.disableBtn(this.isBtnDisabled); // Model вызывает обновление View
+  },
 }
 
 // View
 const calculatorView = {
   resultField: document.getElementById('show-result'),
   button: document.getElementById('calculate-btn'),
-  disableBtn: function(bool) {
+  disableBtn(bool) {
     this.button.disabled = bool;
   },
-  blankResultField: function() {
+  blankResultField() {
     this.resultField.textContent = '';
   },
-  showResult: function(e, result) {
-    console.log('qqq')
+  showResult(e, result) {
     e.preventDefault();
     this.resultField.textContent = result;
   }
@@ -64,28 +72,13 @@ const controller = {
   inputNum_2: document.getElementById('input_2'),
   inputSign: document.getElementById('sign'),
   button: document.getElementById('calculate-btn'),
-  addListeners: function() {
-    this.inputNum_1.addEventListener('input', this.validateInputs.bind(controller));
-    this.inputNum_2.addEventListener('input', this.validateInputs.bind(controller));
-    this.inputSign.addEventListener('change', this.validateInputs.bind(controller));
+  addListeners() {
+    this.inputNum_1.addEventListener('input', () => { calculator.setOperand('firstOperand', this.inputNum_1.value, this.inputSign.value) });
+    this.inputNum_2.addEventListener('input', () => { calculator.setOperand('secondOperand', this.inputNum_2.value, this.inputSign.value) });
+    this.inputSign.addEventListener('change', () => { calculator.setOperator(this.inputSign.value) });
     this.button.addEventListener('click', calculator.showCalculatorView.bind(calculator));
   },
-  validateInputs: function() {
-    if (!this.inputNum_1.value || !this.inputNum_2.value) {
-      calculator.changeDisabledBtnCondition(true);
-      calculator.disableBtnView();
-      calculator.blankCalculatorView();
-      console.log('no')
-    } else {
-      calculator.changeDisabledBtnCondition(false);
-      calculator.disableBtnView();
-      calculator.setOperand('firstOperand', Number(this.inputNum_1.value));
-      calculator.setOperand('secondOperand', Number(this.inputNum_2.value));
-      calculator.setOperator(this.inputSign.value);
-      console.log('yes')
-    }
-  },
-  initDisableBtn: function() {
+  initDisableBtn() {
     calculator.disableBtnView();
   }
 }
