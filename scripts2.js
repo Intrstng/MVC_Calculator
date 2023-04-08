@@ -63,15 +63,17 @@ const calculatorView = {
   showResult(e, result) {
     e.preventDefault();
     this.resultField.textContent = result;
-  }
+  },
 }
 
 // Controller (контроллер вызывает только методы модели)
 const controller = {
-  inputNum_1: document.getElementById('input_1'),
-  inputNum_2: document.getElementById('input_2'),
-  inputSign: document.getElementById('sign'),
-  button: document.getElementById('calculate-btn'),
+  setData(inp1, inp2, inpSign, btn) {
+    this.inputNum_1 = inp1;
+    this.inputNum_2 = inp2;
+    this.inputSign = inpSign;
+    this.button = btn;
+  },
   addListeners() {
     this.inputNum_1.addEventListener('input', () => { calculator.setOperand('firstOperand', this.inputNum_1.value, this.inputSign.value) });
     this.inputNum_2.addEventListener('input', () => { calculator.setOperand('secondOperand', this.inputNum_2.value, this.inputSign.value) });
@@ -80,10 +82,28 @@ const controller = {
   },
   initDisableBtn() {
     calculator.disableBtnView();
+  },
+}
+// Initialization
+window.onload = function() {
+  const app = {
+    inputNum_1: document.getElementById('input_1'),
+    inputNum_2: document.getElementById('input_2'),
+    inputSign: document.getElementById('sign'),
+    button: document.getElementById('calculate-btn'),
+    init() {
+      controller.setData(this.inputNum_1, this.inputNum_2, this.inputSign, this.button);
+      controller.initDisableBtn();
+      this.event();
+    },
+    event() {
+      controller.addListeners();
+    },
   }
+  app.init();
 }
 
-window.addEventListener('load', () => { 
-  controller.initDisableBtn();
-  controller.addListeners();
- });
+// window.addEventListener('load', () => { 
+//   controller.initDisableBtn();
+//   controller.addListeners();
+//  });
