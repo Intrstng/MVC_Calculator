@@ -84,6 +84,7 @@ const controller = {
     calculator.disableBtnView();
   },
 }
+
 // Initialization
 window.onload = function() {
   const app = {
